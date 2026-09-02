@@ -167,6 +167,14 @@ jobs:
           path: ${{ runner.temp }}/cm-security-report.json
           if-no-files-found: warn
 
+      - name: Upload Security Report 2
+        if: ${{ always() && steps.scan.conclusion != 'skipped' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: codemender-report-html
+          path: ${{ runner.temp }}/cm-security-report.html
+          if-no-files-found: warn
+          
       - name: Triage Findings
         id: triage
         run: |
