@@ -149,6 +149,15 @@ jobs:
           echo "----- report (first 2 KB) -----"
           head -c 2048 "$RUNNER_TEMP/cm-security-report.json" || true
           echo
+          
+      - name: Export Security Report (cm report -f html)
+        if: ${{ always() && steps.scan.conclusion != 'skipped' }}
+        run: |
+          set -uo pipefail
+          cm report -f html > "$RUNNER_TEMP/cm-security-report.html" 2> "$RUNNER_TEMP/cm-report.err" || true
+          echo "----- report (first 2 KB) -----"
+          head -c 2048 "$RUNNER_TEMP/cm-security-report.html" || true
+          echo
 
       - name: Upload Security Report
         if: ${{ always() && steps.scan.conclusion != 'skipped' }}
